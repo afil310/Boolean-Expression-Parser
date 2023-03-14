@@ -38,9 +38,9 @@ Next, if the validation is successful, the following steps are repeated until th
 
     2.2 Split the sub-expression into more sub-expressions by the `OR` operator, since the `AND` operations must be evaluated before the `OR` operations.
 
-    2.3 Evaluate and replace these AND operation sub-expressions with the evaluated values. This leaves only the OR operators in the sub-expression.
+    2.3 Evaluate and replace these `AND` operation sub-expressions with the evaluated values. This leaves only the `OR` operators in the sub-expression.
 
-    2.4 Evaluate the values of all `OR` operations in the resulting expression and replace the original expression inside the parentheses with its result - true or false.
+    2.4 Evaluate the values of all `OR` operations in the resulting expression and replace the original expression inside the parentheses with its result - `"true"` or `"false"`.
 
 3. Repeat the steps 1-2 until all parentheses in the input expression, and then the final expression, have been replaced with their evaluated values.
 

@@ -92,6 +92,11 @@ struct Validator {
             numberOfOperatorAndOperandOccurrences += input.components(separatedBy: operatorAndOperand).count - 1
         }
         
+        // Check that the number of unary operator occurrences matches the number of occurrences followed by a valid operand
+        if numberOfOperators != numberOfOperatorAndOperandOccurrences {
+            throw ValidationError.invalidUnaryOperatorSyntax
+        }
+        
         // Iterate over the input and check that the unary operator syntax is correct
         var index = input.index(after: input.startIndex)
         while index < input.endIndex {
@@ -108,11 +113,6 @@ struct Validator {
             }
             index = nextIndex
         }
-        
-        // Check that the number of unary operator occurrences matches the number of occurrences followed by a valid operand
-        if numberOfOperators != numberOfOperatorAndOperandOccurrences {
-            throw ValidationError.invalidUnaryOperatorSyntax
-        }
     }
 
     
@@ -128,7 +128,6 @@ struct Validator {
         
         // Start checking from the second character
         var index = input.index(after: input.startIndex)
-        
         while index < input.endIndex {
             let nextIndex = input.index(after: index)
             let previousIndex = input.index(before: index)
@@ -154,10 +153,10 @@ struct Validator {
 
     
     // Checks if the parentheses are matched correctly
-    private func validateParenthesesMatch(in expression: String) throws {
+    private func validateParenthesesMatch(in input: String) throws {
         var stack = [Character]()
         
-        for char in expression {
+        for char in input {
             switch char {
             case leftParenthesis:
                 // if a left parenthesis is encountered, push it onto the stack
