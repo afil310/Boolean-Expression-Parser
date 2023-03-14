@@ -29,11 +29,11 @@ struct Validator {
     // MARK: - Initialization
     
     init() {
-        let syntaxChars: Set<Character> = [leftParenthesis, rightParenthesis, " "]
         unaryOperators = [operatorNOT]
         binaryOperators = [operatorAND, operatorOR]
         booleans = [trueString, falseString]
         
+        let syntaxChars: Set<Character> = [leftParenthesis, rightParenthesis, " "]
         allowedChars = syntaxChars.union(binaryOperators).union(unaryOperators)
         for char in booleans.joined() {
             allowedChars.insert(char)
@@ -101,12 +101,9 @@ struct Validator {
         var index = input.index(after: input.startIndex)
         while index < input.endIndex {
             let nextIndex = input.index(after: index)
-            let previousIndex = input.index(before: index)
-            guard let char = input[index..<nextIndex].first else { break }
-            
-            if char == unaryOperator {
-                guard let leftChar = input[previousIndex..<index].first else { break }
-                
+            if input[index] == unaryOperator {
+                let previousIndex = input.index(before: index)
+                let leftChar = input[previousIndex]
                 if !leftChar.isWhitespace && (leftChar != leftParenthesis) {
                     throw ValidationError.invalidUnaryOperatorSyntax
                 }
@@ -114,7 +111,6 @@ struct Validator {
             index = nextIndex
         }
     }
-
     
     // Validates that the input string has correct binary operator syntax
     private func validateBinaryOperatorsSyntax(in input: String) throws {
@@ -130,13 +126,12 @@ struct Validator {
         var index = input.index(after: input.startIndex)
         while index < input.endIndex {
             let nextIndex = input.index(after: index)
-            let previousIndex = input.index(before: index)
-            guard let char = input[index..<nextIndex].first else { break }
             
             // If the character is a binary operator, validate its syntax
-            if binaryOperators.contains(char) {
-                guard let leftChar = input[previousIndex..<index].first,
-                      let rightChar = input[nextIndex..<input.index(after: nextIndex)].first else { break }
+            if binaryOperators.contains(input[index]) {
+                let previousIndex = input.index(before: index)
+                let leftChar = input[previousIndex]
+                let rightChar = input[nextIndex]
                 
                 // Check if the operator syntax is valid based on the left and right characters
                 if !(leftChar.isLetter && rightChar.isLetter) && // A&B
@@ -150,7 +145,6 @@ struct Validator {
             index = nextIndex
         }
     }
-
     
     // Checks if the parentheses are matched correctly
     private func validateParenthesesMatch(in input: String) throws {
