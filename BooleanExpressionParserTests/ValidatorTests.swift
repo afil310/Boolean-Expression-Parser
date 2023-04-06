@@ -58,7 +58,8 @@ class ValidatorTests: XCTestCase {
             "! true",
             "!!false",
             "!true!",
-            "true ! false"
+            "true ! false",
+            "false!true",
         ]
         
         for expression in invalidUnarySyntaxExpressions {
